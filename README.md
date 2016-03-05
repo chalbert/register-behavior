@@ -59,4 +59,4 @@ Callback when an attribute changes on the same element on which the behavior is 
 
 ## Browser support
 
-As `registerBehavior` depends on `MutationObserver`, it will work on every browser that supports it. See [http://caniuse.com/#search=MutationObserver]. If support for older browser is desired, it is possible to use a [polyfill](https://github.com/Polymer/MutationObservers), although it will have performance implication.
+As `registerBehavior` depends on `MutationObserver`, it will work on every browser that supports it. See http://caniuse.com/#search=MutationObserver. If support for older browser is desired, it is possible to use a [polyfill](https://github.com/Polymer/MutationObservers), although it will have performance implication.
