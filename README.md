@@ -49,7 +49,7 @@ The callback are always triggered asynchronously.
 Callback when the behavior's attribute is added to a DOM element, or when an element with a behavior's attribute is
 added to the DOM.
 
-### detachedCallback
+### detachedCallback()
 
 Callback when the behavior's attribute is removed from a DOM element, or when an element with a behavior's attribute is removed from the DOM.
 
