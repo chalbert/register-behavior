@@ -1,6 +1,6 @@
 # registerBehavior
 
-`registerBehavior` registers a new Web Behavior. Web Behaviors are special attributes which, when added to an HTML element, extend the behavior of this element. They are a complement to Web Components.
+`registerBehavior` registers a new Web Behavior. Web Behaviors are special attributes which, when added to an DOM element, extend the behavior of this element. They are a complement to Web Components.
 
 At this point, `registerBehavior` is still considered highly experimental.
 
