@@ -7,7 +7,7 @@ At this point, `registerBehavior` is still considered highly experimental.
 ## Register a behavior
 
 ```
-registerBehavior.default('toggle-bold', {
+registerBehavior('toggle-bold', {
     prototype: {
         attachedCallback() {
             this.toggleBold = this.toggleBold.bind(this);
