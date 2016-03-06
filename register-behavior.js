@@ -1,5 +1,3 @@
-'use strict';
-
 let observing = false;
 const behaviors = Object.create(null);
 const behaviorsKey = Symbol('behaviors');
