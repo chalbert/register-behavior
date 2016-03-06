@@ -1,11 +1,11 @@
 {
   "name": "register-behavior",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "test": "node ./test/test.js",
-    "build": "./node_modules/babel-cli/bin/babel.js registerBehavior.js --out-file dist/registerBehavior.js"
+    "build": "./node_modules/babel-cli/bin/babel.js register-behavior.js --out-file dist/register-behavior.js"
   },
-  "main": "dist/registerBehavior.js",
+  "main": "dist/register-behavior.js",
   "devDependencies": {
     "babel-cli": "^6.6.4",
     "babel-plugin-transform-es2015-modules-umd": "^6.6.0",
