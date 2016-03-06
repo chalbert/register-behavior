@@ -23,11 +23,11 @@
 
     function init() {
         observing = true;
-        addBehaviorOnTree(document);
+        addBehaviorsOnTree(document);
         observe();
     }
 
-    function addBehaviorOnTree(tree) {
+    function addBehaviorsOnTree(tree) {
         for (var behavior in behaviors) {
             var elements = tree.querySelectorAll('[' + behavior + ']');
             for (var n = 0, l = elements.length; n < l; n++) {
@@ -127,8 +127,9 @@
                 for (var _iterator2 = mutations[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                     var mutation = _step2.value;
 
-                    var behavior = behaviors[mutation.attributeName];
-                    addBehaviorOnTree(mutation.target, behavior);
+                    // @todo Performance-test other approaches, e.g. tree walker. May depend on number of behaviors / depth
+                    // of tree
+                    addBehaviorsOnTree(mutation.target);
                 }
             } catch (err) {
                 _didIteratorError2 = true;
@@ -145,12 +146,13 @@
                 }
             }
         }).observe(document.body, {
+            subtree: true,
             childList: true
         });
     }
 
     function validate(attributeName) {
-        if (!attributeName.match(/^[a-z][a-z0-9]*\-[a-z0-9\-]+$/)) {
+        if (!attributeName.includes('-')) {
             throw new DOMException('Failed to execute \'registerBehavior\' on \'Document\': Registration failed for type\n        \'' + attributeName + '\'. The type name is invalid.');
         }
 
@@ -178,8 +180,6 @@
     }
 
     function registerBehavior(attributeName, options) {
-        attributeName = attributeName.toLowerCase();
-
         if (!observing) {
             if (document.body) {
                 init();

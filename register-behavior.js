@@ -4,11 +4,11 @@ const behaviorsKey = Symbol('behaviors');
 
 function init() {
     observing = true;
-    addBehaviorOnTree(document);
+    addBehaviorsOnTree(document);
     observe();
 }
 
-function addBehaviorOnTree(tree) {
+function addBehaviorsOnTree(tree) {
     for (let behavior in behaviors) {
         const elements = tree.querySelectorAll(`[${behavior}]`);
         for (let n = 0, l = elements.length; n < l; n++) {
@@ -85,10 +85,12 @@ function observe() {
 
     new MutationObserver((mutations) => {
         for (let mutation of mutations) {
-            const behavior = behaviors[mutation.attributeName];
-            addBehaviorOnTree(mutation.target, behavior);
+            // @todo Performance-test other approaches, e.g. tree walker. May depend on number of behaviors / depth
+            // of tree
+            addBehaviorsOnTree(mutation.target);
         }
     }).observe(document.body, {
+        subtree: true,
         childList: true
     });
 }
