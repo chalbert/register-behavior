@@ -9,22 +9,25 @@ function init() {
 }
 
 function addBehaviorsOnTree(tree) {
-    for (let behavior in behaviors) {
-        const elements = tree.querySelectorAll(`[${behavior}]`);
-        for (let n = 0, l = elements.length; n < l; n++) {
-            addBehavior(elements[n], behaviors[behavior]);
+    const treeWalker = document.createTreeWalker(tree, NodeFilter.SHOW_ELEMENT);
+    while(treeWalker.nextNode()) {
+        // @todo may be more efficient to loop through attributes
+        for (let behavior in behaviors) {
+            if (treeWalker.currentNode.hasAttribute(behaviors[behavior].prototype.type)) {
+                addBehavior(treeWalker.currentNode, behaviors[behavior]);
+            }
         }
     }
 }
 
 function addBehavior(element, behavior) {
     // Only add is not already there
-    if (!element[behaviorsKey] || !element[behaviorsKey][behavior.type]) {
-        const behaviorInstance = Object.create(behavior);
+    if (!element[behaviorsKey] || !element[behaviorsKey][behavior.prototype.type]) {
+        const behaviorInstance = new behavior();
         behaviorInstance.target = element;
 
         element[behaviorsKey] = element[behaviorsKey] || Object.create(null);
-        element[behaviorsKey][behavior.type] = behaviorInstance;
+        element[behaviorsKey][behavior.prototype.type] = behaviorInstance;
 
         if (behaviorInstance.attachedCallback) {
             behaviorInstance.attachedCallback();
@@ -34,11 +37,11 @@ function addBehavior(element, behavior) {
 
 function removeBehavior(element, behavior) {
     const targetBehaviors = element[behaviorsKey];
-    const behaviorInstance = targetBehaviors[behavior.type];
+    const behaviorInstance = targetBehaviors[behavior.prototype.type];
 
     if (behaviorInstance.detachedCallback) {
         behaviorInstance.detachedCallback();
-        delete targetBehaviors[behavior.type];
+        delete targetBehaviors[behavior.prototype.type];
     }
 }
 
@@ -109,8 +112,11 @@ function validate(attributeName) {
 
 function execute(attributeName, options) {
     validate(attributeName);
-    behaviors[attributeName] = options.prototype;
-    behaviors[attributeName].type = attributeName;
+    behaviors[attributeName] = class {};
+    behaviors[attributeName].prototype = options.prototype;
+    // @todo make immutable
+    behaviors[attributeName].prototype.type = attributeName;
+    return behaviors[attributeName];
 }
 
 function registerBehavior(attributeName, options) {
@@ -134,5 +140,5 @@ export default function registerBehavior(attributeName, options) {
         }        
     }
 
-    execute(attributeName, options);
+    return execute(attributeName, options);
 };
